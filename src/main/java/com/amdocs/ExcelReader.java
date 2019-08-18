@@ -11,6 +11,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class ExcelReader
 { 	public static String dateOfBirth;
@@ -20,12 +22,18 @@ public class ExcelReader
 	public static Cell teamEmail;
 	
 	
-    public static final String XLSX_FILE_PATH = "EmployeeDetails.xlsx";
+    public String XLSX_FILE_PATH;
     static ArrayList<Employee> employeeDetails = new ArrayList<Employee> ();
    
 
     public ArrayList<Employee> readInput() throws IOException, InvalidFormatException, ParseException 
     {
+    	
+    	ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfiguration.class);
+		ConfigurationReader configurationReader = applicationContext.getBean(ConfigurationReader.class);
+		
+		XLSX_FILE_PATH=configurationReader.getExcelFilePath();
+    	
     	Workbook workbook = WorkbookFactory.create(new FileInputStream(XLSX_FILE_PATH));
         Sheet sheet = workbook.getSheetAt(0);
      
