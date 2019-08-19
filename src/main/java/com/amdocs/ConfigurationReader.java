@@ -27,7 +27,7 @@ public class ConfigurationReader {
 		return proxyHost;
 	}
 
-	public String getProxyPort() {
+	public int getProxyPort() {
 		return proxyPort;
 	}
 
@@ -45,7 +45,7 @@ public class ConfigurationReader {
 	private String proxyHost;
 	
 	@Value("${proxy.port}")
-	private String proxyPort;
+	private int proxyPort;
 	
 	@Value("${php.host.url}")
 	private String phpHostUrl;

@@ -8,6 +8,9 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 public class PhPSendEmail 
 {
 	static ArrayList<Employee> employeeDetails;
@@ -31,10 +34,13 @@ public class PhPSendEmail
 	} 
 	private static void sendGet(String email,String name,String dl) throws Exception 
 	{
-
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("genproxy.amdocs.com",8080));
 		
-		String url = "http://unsuspicious-meetin.000webhostapp.com/SendEmail.php?email="+email+"&name="+name+"&dl="+dl;
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfiguration.class);
+		ConfigurationReader configurationReader = applicationContext.getBean(ConfigurationReader.class);
+
+		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(configurationReader.getProxyHost(),configurationReader.getProxyPort()));
+		
+		String url = configurationReader.getPhpHostUrl()+"?email="+email+"&name="+name+"&dl="+dl;
 		
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection(proxy);
